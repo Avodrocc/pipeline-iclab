@@ -25,7 +25,7 @@ def call(){
                 mavenAssetList: [
                     [classifier: '',
                     extension: 'jar',
-                    filePath: 'build/IClabPrueba-0.0.1.jar'
+                    filePath: 'build/libs/IClabPrueba-0.0.1.jar'
                 ]
             ],
                 mavenCoordinate: [
