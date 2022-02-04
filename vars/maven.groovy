@@ -4,29 +4,33 @@
 	ejecucion.call()
 */
 def call(){
-  stage("Paso 1: Compliar"){
+  stage("Paso 1: Compilar con Maven"){
     sh "mvn clean compile -e"
   }
-  stage("Paso 2: Testear"){
 
+  stage("Paso 2: Testear con Maven"){
     sh "mvn clean test -e"
   }
-  stage("Paso 3: Build .Jar"){
+
+  stage("Paso 3: Build .Jar con Maven"){
     sh "mvn clean package -e"
   }
-  stage("Paso 4: Sonar - Análisis Estático"){
+
+  stage("Paso 4: Sonarqube - Análisis Estático"){
       sh "echo 'Análisis Estático!'"
       withSonarQubeEnv('sonarqube') {
-          sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=ejemplo-gradle -Dsonar.java.binaries=build'
+          sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=pipeline-iclab-prueba -Dsonar.java.binaries=build'
       }
   }
-  stage("Paso 5: Curl Springboot Gradle sleep 20"){
-      sh "gradle bootRun&"
-      sh "sleep 60 && curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
+
+  stage("Paso 5: Curl Springboot con Maven Durmiendo 20 segundos"){
+      sh 'mvn spring-boot:run &'
+      sh "sleep 20 && curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
   }
+
   stage("Paso 6: Subir Nexus"){
       nexusPublisher nexusInstanceId: 'nexus',
-      nexusRepositoryId: 'devops-usach-nexus',
+      nexusRepositoryId: 'pipeline-iclab-prueba',
       packages: [
           [$class: 'MavenPackage',
               mavenAssetList: [
