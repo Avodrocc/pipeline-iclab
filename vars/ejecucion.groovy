@@ -29,12 +29,10 @@ pipeline {
                   switch(params.compileTool)
                     {
                         case 'Maven':
-                            def ejecucion = load 'vars/maven.groovy'
-                            ejecucion.call()
+                            maven.call()
                         break;
                         case 'Gradle':
-                            def ejecucion = load 'vars/gradle.groovy'
-                            ejecucion.call()
+                            gradle.call()
                         break;
                     }
                 }
