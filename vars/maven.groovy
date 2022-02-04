@@ -23,7 +23,7 @@ def call(){
       }
   }
 
-  stage("Paso 5: Curl Springboot con Maven Durmiendo 20 segundos"){
+  stage("Paso 5: Curl Springboot con Maven durmiendo 20 segundos"){
       sh 'mvn spring-boot:run &'
       sh "sleep 20 && curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
   }
@@ -48,14 +48,14 @@ def call(){
           ]
       ]
   }
-  stage("Paso 7: Descargar Nexus"){
+  stage("Paso 7: Descargar desde Nexus"){
       sh ' curl -X GET -u $NEXUS_USER:$NEXUS_PASSWORD "http://nexus:8081/repository/pipeline-iclab-prueba/com/devopsusach2020/IClabPrueba/0.0.1/IClabPrueba-0.0.1.jar" -O'
   }
   stage("Paso 8: Levantar Artefacto Jar"){
       sh 'nohup bash java -jar IClabPrueba-0.0.1.jar & >/dev/null'
   }
-  stage("Paso 9: Testear Artefacto - Dormir"){
-      sh "sleep 60 && curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
+  stage("Paso 9: Testear Artefacto durmiendo 20 segundos"){
+      sh "sleep 20 && curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
   }
 }
 return this;
